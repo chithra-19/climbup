@@ -34,6 +34,10 @@ public class UserDAO {
 						.uniqueResult();
 		}
 	}
+	public User getUserByEmailAndPassword(String email, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 

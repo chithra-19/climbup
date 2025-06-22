@@ -28,6 +28,9 @@ public class User {
 		
 	}
 
+	public User(String name, String email2, String password2) {
+		// TODO Auto-generated constructor stub
+	}
 	public int getId() {
 		return id;
 	}
