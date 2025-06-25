@@ -14,8 +14,7 @@ public class Task {
 	private int id;
 	
 	private String title;
-	
-	@Temporal(TemporalType.DATE)
+
 	private LocalDate dueDate;
 	
 	private boolean completed;
@@ -73,6 +72,11 @@ public class Task {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public void setStatus(String string) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -1,8 +1,11 @@
 package com.climbup.dao;
 
 import com.climbup.model.Task;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
 import com.climbup.util.HibernateUtil;
 
 import java.util.List;
@@ -26,8 +29,44 @@ public class TaskDAO {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()){
 			return session.createQuery("FROM Task WHERE User.id = :userId", Task.class)
 					.setParameter("userId", userId)
-					.list();
+					.getResultList();
+			
 		}
 	}
+	
+	public void addTask(Task task) {
+	    Session session = HibernateUtil.getSessionFactory().openSession();
+	    Transaction tx = session.beginTransaction();
+	    session.save(task);
+	    tx.commit();
+	    session.close();
+	}
+	
+	public List<Task> getTasksByDate(String filter, int userId) {
+	    Session session = HibernateUtil.sessionFactory.openSession();
+	    String hql = "";
+	    
+	    switch (filter) {
+	        case "today":
+	            hql = "FROM Task WHERE userId = :uid AND DATE(taskDate) = CURDATE()";
+	            break;
+	        case "upcoming":
+	            hql = "FROM Task WHERE userId = :uid AND DATE(taskDate) > CURDATE()";
+	            break;
+	        case "missed":
+	            hql = "FROM Task WHERE userId = :uid AND DATE(taskDate) < CURDATE() AND status = 'pending'";
+	            break;
+	        default:
+	            hql = "FROM Task WHERE userId = :uid";
+	    }
+
+	    Query query = session.createQuery(hql);
+	    query.setParameter("uid", userId);
+	    List<Task> list = query.list();
+	    session.close();
+	    return list;
+	}
+
+
 
 }

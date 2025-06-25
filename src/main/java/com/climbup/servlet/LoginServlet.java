@@ -9,7 +9,7 @@ import javax.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet("/login")
-public class LoginServlet {
+public class LoginServlet extends HttpServlet {
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	            throws ServletException, IOException {
 	        
@@ -26,6 +26,12 @@ public class LoginServlet {
 	        } else {
 	            response.sendRedirect("login.jsp?error=1");
 	        }
+	    }
+
+	    @Override
+	    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	            throws ServletException, IOException {
+	        response.sendRedirect("login.jsp");
 	    }
 
 }
