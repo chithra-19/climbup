@@ -7,14 +7,20 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
 	
-	/*This declares and initializes the sessionFactory when the class is first loaded.
-	It calls the helper method buildSessionFactory() to create the object.*/
-
+	/*When HibernateUtil is first loaded, Java calls buildSessionFactory().
+	That method runs only once, and returns the SessionFactory.
+	The result is saved in the final variable sessionFactory.
+	
+	//Declares a static, final field — so it's created once and shared across your entire application.*/
 	public static final SessionFactory sessionFactory = buildSessionFactory();
 	
 	
 	/*This is the helper method that contains the actual logic to create the SessionFactory.
 	It's separate from the declaration to keep code clean and handle errors (try-catch).*/
+	
+	/*This actually builds the SessionFactory.
+	This line is only called once, during class loading.
+	After that, the result is reused.*/
 	
 	private static SessionFactory buildSessionFactory() {
 		try {
@@ -26,21 +32,29 @@ public class HibernateUtil {
 		}
 		
 	}
+	
+	/*we use Encapsulation to:
+	Prevent direct access to the sessionFactory field
+	Provide controlled, safe access through a public method*/
+	
 	public static SessionFactory getSessionFactory() {
 		return sessionFactory;
-		
-	}
+		//We only create it once, and then return the same one every time through:
+		}
 	public static void shutdown() {
-		getSessionFactory().close();
+		getSessionFactory().close();//)	Closes the entire Hibernate system (SessionFactory)
+		//Just returns the already-built object
+
 	}
 
 }
-/*new Configuration().configure():
+/*
+ 
 
-Reads hibernate.cfg.xml (from resources/ folder by default).
 
-Applies all settings (like DB URL, dialect, mappings, etc.).
-
-.buildSessionFactory():
-
-Creates the actual SessionFactory based on those settings.*/
+ 
+| What happens            | How often      | Purpose                               |
+| ----------------------- | -------------- | ------------------------------------- |
+| `buildSessionFactory()` | **Once**       | Actually builds the `SessionFactory`  |
+| `getSessionFactory()`   | **Many times** | Just returns the already-built object |
+*/

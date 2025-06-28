@@ -3,6 +3,7 @@ package com.climbup.model;
 import javax.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -22,6 +23,14 @@ public class Task {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
+	
+	@Enumerated(EnumType.STRING)
+	private TaskStatus status;
+	
+
+    @Column(name = "completed_at")
+	private LocalDateTime completedAt;
+	
 	
 	public Task() {
 		
@@ -74,8 +83,17 @@ public class Task {
 		this.user = user;
 	}
 
-	public void setStatus(String string) {
+	public void setStatus(TaskStatus status2) {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	public enum TaskStatus{
+		PENDING , COMPLETED , MISSED;
+	}
+
+	public void setCompletedAt(LocalDateTime completedAt) {
+		this.completedAt = completedAt;
 		
 	}
 

@@ -26,7 +26,14 @@ public class UserDAO {
 			if(transaction != null) transaction.rollback();
 			e.printStackTrace();
 		}
-		}
+	}
+	
+	/*Opens a session (no transaction needed for read)
+	 * Uses HQL (Hibernate Query Language):"FROM User WHERE email = :email"
+	Sets the parameter (:email)
+	Calls uniqueResult() — gets a single result or null
+	Session is auto-closed*/
+	
 	public User getUserByEmail(String email) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()){
 			return session.createQuery("FROM User WHERE email = :email", User.class)

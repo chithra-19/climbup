@@ -3,17 +3,28 @@
     <td>${task.title}</td>
     <td>${task.dueDate}</td>
     <td>${task.status}</td>
+    <td>
+      <c:if test="${task.status == 'PENDING'}">
+        <form action="task/updateStatus" method="post" style="display:inline;">
+          <input type="hidden" name="id" value="${task.id}" />
+          <input type="hidden" name="action" value="complete" />
+          <button class="btn btn-success btn-sm">✅ Complete</button>
+        </form>
+
+        <form action="task/updateStatus" method="post" style="display:inline;">
+          <input type="hidden" name="id" value="${task.id}" />
+          <input type="hidden" name="action" value="miss" />
+          <button class="btn btn-danger btn-sm">❌ Miss</button>
+        </form>
+      </c:if>
+    </td>
   </tr>
 </c:forEach>
 
-
-<c:if test="${empty taskList}">
-    <tr><td colspan="3">No tasks found for this filter.</td></tr>
-</c:if>
-
-<a href="DashboardServlet?filter=today">Today</a> |
-<a href="DashboardServlet?filter=upcoming">Upcoming</a> |
-<a href="DashboardServlet?filter=missed">Missed</a>
-
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+  <div class="card-header">7-Day Productivity Score</div>
+  <div class="card-body">
+    <h5 class="card-title">${score}%</h5>
+  </div>
+</div>
 

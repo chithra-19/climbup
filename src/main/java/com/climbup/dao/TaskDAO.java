@@ -1,6 +1,7 @@
 package com.climbup.dao;
 
 import com.climbup.model.Task;
+import com.climbup.model.Task.TaskStatus;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -8,6 +9,7 @@ import org.hibernate.query.Query;
 
 import com.climbup.util.HibernateUtil;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class TaskDAO {
@@ -66,6 +68,25 @@ public class TaskDAO {
 	    session.close();
 	    return list;
 	}
+	
+	
+	public void updateStatus(int taskId, TaskStatus status) {
+	    Session session = HibernateUtil.sessionFactory.openSession();
+	    Transaction tx = session.beginTransaction();
+	    Task task = session.get(Task.class, taskId);
+	    if (task != null) {
+	        task.setStatus(status);
+	        if (status == TaskStatus.COMPLETED) {
+	            task.setCompletedAt(LocalDateTime.now());
+	        }
+	        session.update(task);
+	    }
+	    tx.commit();
+	    session.close();
+	}
+
+	
+	
 
 
 
