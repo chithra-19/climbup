@@ -45,6 +45,12 @@ public class DashboardServlet extends HttpServlet {
         request.setAttribute("taskList", taskList);
         request.setAttribute("filter", filter); // optional, for highlighting active filter
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+        
+        int userId = loggedInUser.getId();  
+        List<Task> recentTasks = taskDAO.getCompletedTasksLast7Days(userId);
+        int score = (recentTasks.size() * 100) / 7;
+        request.setAttribute("score", score);
+
     }
 
 }

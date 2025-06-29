@@ -9,7 +9,10 @@ import org.hibernate.query.Query;
 
 import com.climbup.util.HibernateUtil;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 public class TaskDAO {
@@ -84,6 +87,19 @@ public class TaskDAO {
 	    tx.commit();
 	    session.close();
 	}
+	
+	
+	public List<Task> getCompletedTasksLast7Days(int userId) {
+	    Session session = HibernateUtil.sessionFactory.openSession();
+	    Date sevenDaysAgo = Date.from(LocalDate.now().minusDays(6)
+	        .atStartOfDay(ZoneId.systemDefault()).toInstant());
+	    String hql = "FROM Task WHERE userId = :uid AND completed = true AND completionDate >= :date";
+	    Query query = session.createQuery(hql);
+	    query.setParameter("uid", userId);
+	    query.setParameter("date", sevenDaysAgo);
+	    return query.list();
+	}
+
 
 	
 	
