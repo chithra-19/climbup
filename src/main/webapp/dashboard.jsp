@@ -27,4 +27,11 @@
     <h5 class="card-title">${score}%</h5>
   </div>
 </div>
+<div class="card text-center">
+  <div class="card-body">
+    <h5 class="card-title">🔥 Streak</h5>
+    <p class="card-text"><strong>${streak}</strong> days</p>
+  </div>
+</div>
+
 

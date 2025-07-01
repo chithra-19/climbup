@@ -99,6 +99,33 @@ public class TaskDAO {
 	    query.setParameter("date", sevenDaysAgo);
 	    return query.list();
 	}
+	
+	public List<Task> getCompletedTasksByUserInLastNDays(int userId, int days) {
+	    Session session = HibernateUtil.sessionFactory.openSession();
+	    LocalDate fromDate = LocalDate.now().minusDays(days);
+	    String hql = "FROM Task WHERE user.id = :userId AND status = 'completed' AND dueDate >= :fromDate";
+	    List<Task> tasks = session.createQuery(hql, Task.class)
+	        .setParameter("userId", userId)
+	        .setParameter("fromDate", fromDate)
+	        .getResultList();
+	    session.close();
+	    return tasks;
+	}
+	
+	public List<LocalDate> getProductiveDays(int userId) {
+	    Session session = HibernateUtil.getSessionFactory().openSession();
+
+	    String hql = "SELECT DISTINCT DATE(t.completedAt) FROM Task t WHERE t.user.id = :userId AND t.status = :status";
+	    List<LocalDate> days = session.createQuery(hql, LocalDate.class)
+	        .setParameter("userId", userId)
+	        .setParameter("status", Task.TaskStatus.COMPLETED)
+	        .getResultList();
+
+	    session.close();
+	    return days;
+	}
+
+
 
 
 	

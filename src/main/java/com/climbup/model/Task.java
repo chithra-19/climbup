@@ -83,9 +83,12 @@ public class Task {
 		this.user = user;
 	}
 
-	public void setStatus(TaskStatus status2) {
-		// TODO Auto-generated method stub
-		
+	public TaskStatus getStatus() {
+	    return status;
+	}
+
+	public void setStatus(TaskStatus status) {
+	    this.status = status;
 	}
 	
 	public enum TaskStatus{

@@ -50,7 +50,18 @@ public class DashboardServlet extends HttpServlet {
         List<Task> recentTasks = taskDAO.getCompletedTasksLast7Days(userId);
         int score = (recentTasks.size() * 100) / 7;
         request.setAttribute("score", score);
+        
+        int userId1 = (Integer) session.getAttribute("userId");
+        List<Task> recentTasks1 = taskDAO.getCompletedTasksByUserInLastNDays(userId1, 30);
+        int streak = calculateStreak(recentTasks1);
+        request.setAttribute("streak", streak);
+
 
     }
+
+	private int calculateStreak(List<Task> recentTasks1) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }
